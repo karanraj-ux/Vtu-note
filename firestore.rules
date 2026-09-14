@@ -1,0 +1,89 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // 1. Global Safety Net
+    match /{document=**} { 
+      allow read, write: if false; 
+    }
+
+    // Primitive Helpers
+    function isValidId(id) { 
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$'); 
+    }
+    function incoming() { return request.resource.data; }
+    function existing() { return resource.data; }
+    function isSignedIn() { return request.auth != null && request.auth.token.email_verified == true; }
+    function isOwner(userId) { return isSignedIn() && request.auth.uid == userId; }
+
+    // User Entity Validation
+    function isValidUser(data) {
+      return data.keys().hasAll(['email', 'name', 'createdAt', 'updatedAt']) &&
+             data.email is string && data.email.size() <= 100 &&
+             data.name is string && data.name.size() <= 100 &&
+             (data.get('college', '') is string && data.get('college', '').size() <= 100) &&
+             (data.get('branch', '') is string && data.get('branch', '').size() <= 100) &&
+             (data.get('semester', '') is string && data.get('semester', '').size() <= 2) &&
+             data.createdAt == request.time &&
+             data.updatedAt == request.time;
+    }
+
+    function isValidUserUpdate(data) {
+       return data.email is string && data.email.size() <= 100 &&
+             data.name is string && data.name.size() <= 100 &&
+             (data.get('college', '') is string && data.get('college', '').size() <= 100) &&
+             (data.get('branch', '') is string && data.get('branch', '').size() <= 100) &&
+             (data.get('semester', '') is string && data.get('semester', '').size() <= 2) &&
+             data.updatedAt == request.time;
+    }
+
+    match /users/{userId} {
+      allow get: if isOwner(userId);
+      allow create: if isOwner(userId) && isValidId(userId) && isValidUser(incoming());
+      allow update: if isOwner(userId) && isValidId(userId) && isValidUserUpdate(incoming()) && incoming().createdAt == existing().createdAt && incoming().email == existing().email;
+    }
+
+    // Saved Notes Validation
+    function isValidSavedNote(data) {
+      return data.keys().hasAll(['id', 'title', 'url', 'subjectCode', 'subjectName', 'createdAt']) && data.keys().size() == 6 &&
+             data.id is string && data.id.size() <= 100 &&
+             data.title is string && data.title.size() <= 200 &&
+             data.url is string && data.url.size() <= 1000 &&
+             (data.get('subjectCode', '') is string && data.get('subjectCode', '').size() <= 100) &&
+             (data.get('subjectName', '') is string && data.get('subjectName', '').size() <= 200) &&
+             data.createdAt == request.time;
+    }
+
+    match /users/{userId}/saved_notes/{noteId} {
+      allow read: if isOwner(userId);
+      allow create: if isOwner(userId) && isValidId(userId) && isValidId(noteId) && isValidSavedNote(incoming());
+      allow delete: if isOwner(userId) && isValidId(userId) && isValidId(noteId);
+    }
+    
+    // Community Notes Validation
+    function isValidCommunityNote(data) {
+      return data.keys().hasAll(['title', 'fileUrl', 'uploaderId', 'uploaderName', 'college', 'createdAt']) &&
+             data.title is string && data.title.size() <= 200 &&
+             data.fileUrl is string && data.fileUrl.size() <= 1000 &&
+             data.uploaderId is string && data.uploaderId.size() <= 128 &&
+             data.uploaderName is string && data.uploaderName.size() <= 100 &&
+             data.college is string && data.college.size() <= 100 &&
+             data.createdAt == request.time;
+    }
+    
+    function isValidCommunityNoteUpdate(data) {
+       return data.title is string && data.title.size() <= 200 &&
+              data.fileUrl == existing().fileUrl &&
+              data.uploaderId == existing().uploaderId &&
+              data.uploaderName == existing().uploaderName &&
+              data.college == existing().college &&
+              data.createdAt == existing().createdAt;
+    }
+
+    match /community_notes/{noteId} {
+      allow read: if isSignedIn();
+      allow create: if isSignedIn() && isValidId(noteId) && incoming().uploaderId == request.auth.uid && isValidCommunityNote(incoming());
+      allow update: if isSignedIn() && isValidId(noteId) && existing().uploaderId == request.auth.uid && incoming().uploaderId == request.auth.uid && isValidCommunityNoteUpdate(incoming());
+      allow delete: if isSignedIn() && isValidId(noteId) && existing().uploaderId == request.auth.uid;
+    }
+  }
+}

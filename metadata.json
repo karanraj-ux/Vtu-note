@@ -1,0 +1,6 @@
+{
+  "name": "VTU Notes Tracker",
+  "description": "An advanced, simple VTU notes platform with college email profiles and saved study materials.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

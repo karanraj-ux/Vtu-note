@@ -1,0 +1,96 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "A user profile for VTU Notes.",
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "maxLength": 100,
+          "description": "User's college email"
+        },
+        "name": {
+          "type": "string",
+          "maxLength": 100,
+          "description": "User's full name"
+        },
+        "college": {
+          "type": "string",
+          "maxLength": 100,
+          "description": "User's college name"
+        },
+        "branch": {
+          "type": "string",
+          "maxLength": 100,
+          "description": "User's branch of study"
+        },
+        "semester": {
+          "type": "string",
+          "maxLength": 2,
+          "description": "User's current semester"
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Server timestamp of when the user was created"
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "Server timestamp of when the user was last updated"
+        }
+      },
+      "required": ["email", "name"]
+    },
+    "SavedNote": {
+      "title": "Saved Note",
+      "description": "A reference to a note saved by a user.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "maxLength": 100,
+          "description": "ID of the saved note (module code/id)"
+        },
+        "title": {
+          "type": "string",
+          "maxLength": 200,
+          "description": "Title of the note"
+        },
+        "url": {
+          "type": "string",
+          "maxLength": 1000,
+          "description": "URL of the note"
+        },
+        "subjectCode": {
+          "type": "string",
+          "maxLength": 100,
+          "description": "Code of the subject"
+        },
+        "subjectName": {
+          "type": "string",
+          "maxLength": 200,
+          "description": "Name of the subject"
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "When the note was saved"
+        }
+      },
+      "required": ["id", "title", "url", "subjectCode", "subjectName", "createdAt"]
+    }
+  },
+  "firestore": {
+    "users/{userId}": {
+      "schema": {
+        "$ref": "#/entities/User"
+      },
+      "description": "User profiles. Users can only read and write their own profile."
+    },
+    "users/{userId}/saved_notes/{noteId}": {
+      "schema": {
+        "$ref": "#/entities/SavedNote"
+      },
+      "description": "Notes saved by the user. Only the user can access their own saved notes."
+    }
+  }
+}
