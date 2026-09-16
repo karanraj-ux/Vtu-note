@@ -2,8 +2,9 @@ import { useState, useEffect } from 'react';
 import { useAuth } from '../hooks/useAuth';
 import { db } from '../firebase';
 import { collection, query, where, getDocs, doc, setDoc, updateDoc, deleteDoc, serverTimestamp, getDoc } from 'firebase/firestore';
-import { Upload, FileText, Trash2, Edit2, Loader2, Building, AlertCircle } from 'lucide-react';
+import { Upload, FileText, Trash2, Edit2, Loader2, Building, AlertCircle, Share2, ShieldCheck } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import ShareModal from '../components/ShareModal';
 
 export default function Community() {
   const { user } = useAuth();
@@ -18,6 +19,9 @@ export default function Community() {
 
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editTitle, setEditTitle] = useState('');
+
+  // Share modal state
+  const [shareDoc, setShareDoc] = useState<{ title: string; url: string; subtitle?: string } | null>(null);
 
   useEffect(() => {
     const fetchProfileAndNotes = async () => {
@@ -59,6 +63,12 @@ export default function Community() {
     e.preventDefault();
     if (!uploadFile || !uploadTitle.trim() || !user) return;
 
+    // Anti-spam requirement: College ID / USN verification
+    if (!profile?.collegeId) {
+      alert('Anti-Spam Verification: Please set your unique College ID (USN) in your Profile before publishing documents.');
+      return;
+    }
+
     setUploading(true);
     try {
       const formData = new FormData();
@@ -78,6 +88,7 @@ export default function Community() {
           fileUrl: data.url,
           uploaderId: user.uid,
           uploaderName: profile?.name || user.displayName || 'Anonymous',
+          collegeId: profile.collegeId,
           college: profile?.college || 'Global',
           createdAt: serverTimestamp()
         };
@@ -88,7 +99,7 @@ export default function Community() {
         setNotes([{ id: noteId, ...noteData, createdAt: { toDate: () => new Date() } }, ...notes]);
         setUploadFile(null);
         setUploadTitle('');
-        alert('Document uploaded successfully!');
+        alert('Document published successfully!');
       } else {
         alert('File upload failed.');
       }
@@ -158,18 +169,20 @@ export default function Community() {
           <h1 className="text-4xl font-extrabold text-zinc-100 tracking-tight">Community Feed</h1>
           <p className="text-zinc-400 mt-3 flex items-center justify-center text-lg">
             <Building className="h-5 w-5 mr-2 text-zinc-500" />
-            {profile?.college ? `${profile.college} Community` : 'Global Community (Set your college in Profile)'}
+            {profile?.college ? `${profile.college} Community` : 'Global Community'}
           </p>
-          {!profile?.college && (
-            <Link to="/profile" className="mt-4 inline-block text-sm font-medium text-blue-400 hover:text-blue-300 hover:underline">
-              Set College Profile &rarr;
-            </Link>
+          {!profile?.collegeId && (
+            <div className="mt-4 p-3 bg-blue-900/20 border border-blue-500/30 rounded-2xl max-w-md mx-auto text-xs text-blue-300">
+              Set your unique <strong>College ID (USN)</strong> in your profile to verify your account and upload study notes.
+              <Link to="/profile" className="ml-2 underline font-bold hover:text-white">
+                Set USN in Profile &rarr;
+              </Link>
+            </div>
           )}
         </div>
 
         {/* Central Upload Section */}
         <div className="bg-zinc-900/40 rounded-3xl shadow-xl border border-zinc-800/80 p-8 mb-12 backdrop-blur-xl relative overflow-hidden">
-          {/* Subtle glow effect */}
           <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-blue-500/50 to-transparent"></div>
           
           <div className="max-w-2xl mx-auto">
@@ -177,8 +190,29 @@ export default function Community() {
               <div className="bg-blue-500/20 p-2 rounded-xl mr-3">
                 <Upload className="h-6 w-6 text-blue-400" />
               </div>
-              Upload a Document
+              Upload & Share a Document
             </h2>
+
+            {profile?.collegeId ? (
+              <div className="mb-6 p-3 bg-emerald-500/10 border border-emerald-500/20 rounded-2xl flex items-center justify-between text-xs text-emerald-300">
+                <div className="flex items-center space-x-2">
+                  <ShieldCheck className="w-4 h-4 text-emerald-400" />
+                  <span>Authenticated USN: <strong>{profile.collegeId}</strong></span>
+                </div>
+                <span className="text-[10px] uppercase font-bold text-emerald-400">Anti-Spam Protected</span>
+              </div>
+            ) : (
+              <div className="mb-6 p-3 bg-amber-500/10 border border-amber-500/20 rounded-2xl flex items-center justify-between text-xs text-amber-300">
+                <div className="flex items-center space-x-2">
+                  <AlertCircle className="w-4 h-4 text-amber-400" />
+                  <span>Please configure your unique USN before uploading</span>
+                </div>
+                <Link to="/profile" className="font-bold underline text-amber-200 hover:text-white">
+                  Profile
+                </Link>
+              </div>
+            )}
+
             <form onSubmit={handleUpload} className="space-y-6">
               <div>
                 <label className="block text-sm font-medium text-zinc-400 mb-2">Document Title</label>
@@ -188,7 +222,7 @@ export default function Community() {
                   value={uploadTitle}
                   onChange={(e) => setUploadTitle(e.target.value)}
                   className="w-full px-5 py-3 bg-zinc-950/50 border border-zinc-800 rounded-xl focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 outline-none text-zinc-100 transition-all"
-                  placeholder="e.g. Module 1 Notes - CN"
+                  placeholder="e.g. Module 1 Notes - Operating Systems"
                 />
               </div>
               <div>
@@ -205,8 +239,8 @@ export default function Community() {
               </div>
               <button
                 type="submit"
-                disabled={uploading || !uploadFile || !uploadTitle.trim()}
-                className="w-full flex justify-center items-center px-6 py-4 text-base font-bold text-white bg-blue-600 rounded-xl hover:bg-blue-500 disabled:opacity-50 disabled:hover:bg-blue-600 transition-all shadow-[0_0_20px_-5px_rgba(37,99,235,0.4)]"
+                disabled={uploading || !uploadFile || !uploadTitle.trim() || !profile?.collegeId}
+                className="w-full flex justify-center items-center px-6 py-4 text-base font-bold text-white bg-blue-600 rounded-xl hover:bg-blue-500 disabled:opacity-50 disabled:hover:bg-blue-600 transition-all shadow-[0_0_20px_-5px_rgba(37,99,235,0.4)] cursor-pointer"
               >
                 {uploading ? <Loader2 className="h-6 w-6 animate-spin" /> : 'Publish to Community'}
               </button>
@@ -216,7 +250,7 @@ export default function Community() {
 
         {/* Feed Section */}
         <div className="space-y-6">
-          <h3 className="text-xl font-bold text-zinc-100 mb-4 px-2">Recent Uploads</h3>
+          <h3 className="text-xl font-bold text-zinc-100 mb-4 px-2">Recent Community Uploads</h3>
           {notes.length === 0 ? (
             <div className="text-center py-20 bg-zinc-900/30 rounded-3xl border border-dashed border-zinc-800">
               <FileText className="mx-auto h-12 w-12 text-zinc-700 mb-4" />
@@ -246,29 +280,50 @@ export default function Community() {
                       ) : (
                         <h3 className="text-xl font-bold text-zinc-100">{note.title}</h3>
                       )}
-                      <div className="flex flex-wrap items-center text-sm text-zinc-500 mt-2 gap-x-2">
-                        <span>Uploaded by <strong className="text-zinc-300 font-medium">{note.uploaderName}</strong></span>
+                      
+                      <div className="flex flex-wrap items-center text-xs text-zinc-400 mt-2 gap-2">
+                        <span>Uploaded by <strong className="text-zinc-200 font-medium">{note.uploaderName}</strong></span>
+                        {note.collegeId && (
+                          <span className="px-2 py-0.5 rounded-md bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 font-mono font-bold">
+                            USN: {note.collegeId}
+                          </span>
+                        )}
                         <span className="text-zinc-700">•</span>
                         <span>{note.createdAt?.toDate ? note.createdAt.toDate().toLocaleDateString() : 'Just now'}</span>
                       </div>
                     </div>
                   </div>
                   
-                  <div className="flex items-center space-x-4 md:space-x-3 shrink-0 ml-16 md:ml-0">
+                  <div className="flex items-center space-x-3 shrink-0 ml-16 md:ml-0">
                     <a
                       href={note.fileUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center px-5 py-2.5 text-sm font-bold rounded-xl text-blue-400 bg-blue-500/10 hover:bg-blue-500/20 border border-blue-500/20 transition-all"
+                      className="inline-flex items-center px-4 py-2 text-sm font-bold rounded-xl text-blue-400 bg-blue-500/10 hover:bg-blue-500/20 border border-blue-500/20 transition-all"
                     >
                       View Doc
                     </a>
+
+                    {/* Dedicated PDF / Doc Share Button */}
+                    <button
+                      onClick={() => setShareDoc({
+                        title: note.title,
+                        url: note.fileUrl,
+                        subtitle: `Uploaded by ${note.uploaderName} • USN: ${note.collegeId || 'Verified'}`
+                      })}
+                      className="inline-flex items-center space-x-1.5 px-3.5 py-2 text-sm font-semibold rounded-xl text-zinc-300 bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 transition-all"
+                      title="Share PDF Document via WhatsApp/Telegram/Link"
+                    >
+                      <Share2 className="h-4 w-4 text-blue-400" />
+                      <span>Share</span>
+                    </button>
+
                     {note.uploaderId === user.uid && editingId !== note.id && (
                       <>
-                        <button onClick={() => startEdit(note)} className="p-2.5 text-zinc-500 hover:text-blue-400 transition-colors rounded-xl hover:bg-zinc-800" title="Edit Title">
+                        <button onClick={() => startEdit(note)} className="p-2 text-zinc-500 hover:text-blue-400 transition-colors rounded-xl hover:bg-zinc-800" title="Edit Title">
                           <Edit2 className="h-4 w-4" />
                         </button>
-                        <button onClick={() => handleDelete(note.id)} className="p-2.5 text-zinc-500 hover:text-red-400 transition-colors rounded-xl hover:bg-zinc-800" title="Delete Note">
+                        <button onClick={() => handleDelete(note.id)} className="p-2 text-zinc-500 hover:text-red-400 transition-colors rounded-xl hover:bg-zinc-800" title="Delete Note">
                           <Trash2 className="h-4 w-4" />
                         </button>
                       </>
@@ -280,6 +335,17 @@ export default function Community() {
           )}
         </div>
       </div>
+
+      {/* Share Document Modal */}
+      {shareDoc && (
+        <ShareModal
+          isOpen={!!shareDoc}
+          onClose={() => setShareDoc(null)}
+          title={shareDoc.title}
+          url={shareDoc.url}
+          subtitle={shareDoc.subtitle}
+        />
+      )}
     </div>
   );
 }

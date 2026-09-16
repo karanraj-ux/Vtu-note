@@ -1,47 +1,93 @@
-# Module 5: Machine Learning
+# Module 5: Machine Learning Foundations & Applications
+
+## Course: Introduction to Artificial Intelligence (1BAIA103)
+**Module Weightage**: 20 Marks in VTU Examination
+
+---
 
 ## 1. What is Machine Learning?
 
-Machine Learning (ML) is a subset of AI that focuses on building systems that learn—or improve performance—based on the data they consume. Instead of explicitly programming the rules, we provide data and the algorithm finds the rules.
+According to Arthur Samuel (1959), **Machine Learning** is the field of study that gives computers the ability to learn without being explicitly programmed.  
+Tom Mitchell (1997) provided a formal engineering definition:
+> *"A computer program is said to learn from experience $E$ with respect to some class of tasks $T$ and performance measure $P$, if its performance at tasks in $T$, as measured by $P$, improves with experience $E$."*
 
-## 2. Types of Machine Learning
+### Paradigms of Machine Learning:
+1. **Supervised Learning**: The training dataset contains both inputs (features $X$) and corresponding correct labels ($Y$).
+2. **Unsupervised Learning**: The dataset consists only of unlabeled feature vectors $X$. The goal is to discover latent patterns, density distributions, or groupings.
+3. **Reinforcement Learning**: An autonomous agent interacts with a dynamic environment via trial and error, guided by scalar reward/penalty feedback signals.
 
-### A. Supervised Learning
-*   **Concept:** The algorithm learns from labeled training data. The data includes both the input features and the correct output (target).
-*   **Tasks:**
-    *   **Classification:** Predicting a discrete category (e.g., spam vs. not spam, identifying a digit from an image).
-    *   **Regression:** Predicting a continuous numerical value (e.g., predicting house prices, forecasting stock values).
-*   **Common Algorithms:** Linear Regression, Logistic Regression, Decision Trees, Support Vector Machines (SVM).
+---
 
-### B. Unsupervised Learning
-*   **Concept:** The algorithm is given unlabeled data and must find hidden structures, patterns, or groupings within it.
-*   **Tasks:**
-    *   **Clustering:** Grouping similar data points together (e.g., customer segmentation).
-    *   **Dimensionality Reduction:** Compressing data while keeping the important features (e.g., PCA).
-*   **Common Algorithms:** K-Means Clustering, Hierarchical Clustering.
+## 2. Supervised Learning: Classification vs. Regression
 
-### C. Reinforcement Learning
-*   **Concept:** An agent learns to make decisions by performing actions in an environment and receiving rewards or penalties. It aims to maximize long-term cumulative reward.
-*   **Analogy:** Training a dog with treats.
-*   **Applications:** Robotics, playing games (Chess, Go), autonomous driving.
+| Characteristic | Classification | Regression |
+|---|---|---|
+| **Target Output ($Y$)** | Categorical / Discrete values | Continuous numerical values |
+| **Example Problems** | Spam vs. Ham, Disease diagnosis, Digit recognition | House price estimation, Temperature forecasting |
+| **Popular Algorithms** | Decision Trees, Naive Bayes, Logistic Regression, SVM | Linear Regression, Polynomial Regression, Ridge/Lasso |
+| **Evaluation Metrics** | Accuracy, Precision, Recall, F1-Score, ROC-AUC | Mean Squared Error (MSE), Root MSE (RMSE), $R^2$ score |
 
-## 3. Artificial Neural Networks (ANNs)
+---
 
-Inspired by the biological brain, ANNs are the foundation of Deep Learning.
+## 3. Decision Tree Induction (ID3 Algorithm)
 
-*   **Neurons (Perceptrons):** The basic unit. It takes inputs, multiplies them by weights, adds a bias, passes the sum through an activation function, and produces an output.
-*   **Layers:**
-    *   **Input Layer:** Receives the raw data.
-    *   **Hidden Layers:** Intermediate layers where the computation and feature extraction happen.
-    *   **Output Layer:** Produces the final prediction.
-*   **Training (Backpropagation):** The network makes a prediction, calculates the error (loss), and then propagates this error backwards through the network to adjust the weights, minimizing the error over time.
+Decision Trees are intuitive, rule-based hierarchical models where:
+- **Internal Nodes**: Tests on an attribute.
+- **Branches**: Outcomes of the attribute test.
+- **Leaf Nodes**: Class label predictions.
 
-## 4. Evaluation Metrics
+### A. Entropy (Measure of Impurity)
+Given a training dataset $S$ with $c$ distinct classes:
+$$\text{Entropy}(S) = -\sum_{i=1}^c p_i \log_2 (p_i)$$
+where $p_i$ is the proportion of examples belonging to class $i$.
+- If all samples belong to the same class: $\text{Entropy}(S) = 0$ (completely pure).
+- For a balanced binary dataset ($p_1 = 0.5, p_2 = 0.5$): $\text{Entropy}(S) = 1$ (maximum impurity).
 
-How do we know if our ML model is good?
+### B. Information Gain
+Information Gain measures the reduction in entropy achieved by partitioning the dataset $S$ according to attribute $A$:
+$$\text{Gain}(S, A) = \text{Entropy}(S) - \sum_{v \in \text{Values}(A)} \frac{|S_v|}{|S|} \text{Entropy}(S_v)$$
+The ID3 algorithm selects the attribute with the **highest Information Gain** at each node.
 
-*   **Accuracy:** Percentage of correct predictions (overall).
-*   **Precision:** Out of all the positive predictions, how many were actually positive? (Minimizes False Positives).
-*   **Recall (Sensitivity):** Out of all actual positives, how many did we identify? (Minimizes False Negatives).
-*   **F1-Score:** The harmonic mean of Precision and Recall.
-*   **Overfitting:** When a model memorizes the training data perfectly but fails to generalize to new, unseen data. (Fixed by regularization, more data, or simpler models).
+### C. Overfitting and Pruning
+- **Overfitting**: When a model memorizes random noise in the training set and performs poorly on unseen test data.
+- **Remedy**:
+  1. **Pre-pruning**: Halt tree growth early based on depth limit or minimum sample split.
+  2. **Post-pruning**: Grow full tree, then prune branches that do not improve validation set accuracy.
+
+---
+
+## 4. Artificial Neural Networks & The Perceptron
+
+### A. The Rosenblatt Perceptron
+The simplest model of a biological neuron:
+$$y = f\left(\sum_{i=1}^n w_i x_i + b\right) = f(W^T X + b)$$
+where:
+- $X = [x_1, x_2, \dots, x_n]^T$ is the input vector.
+- $W = [w_1, w_2, \dots, w_n]^T$ is the weight vector.
+- $b$ is the bias term.
+- $f(\cdot)$ is an activation function (e.g., Step, Sigmoid, ReLU, Tanh).
+
+### B. The Linearity Limit (Minsky & Papert, 1969)
+A single-layer perceptron can only learn **linearly separable** functions (like AND, OR). It **cannot solve the XOR problem**.  
+To solve non-linear problems, **Multilayer Perceptrons (MLPs)** with non-linear activation functions and the **Backpropagation Algorithm** are required.
+
+---
+
+## 5. Major Modern AI Application Domains
+
+1. **Natural Language Processing (NLP)**:
+   - Sentiment analysis, machine translation, large language models (LLMs), automated speech recognition.
+2. **Computer Vision (CV)**:
+   - Object detection (YOLO), facial recognition, autonomous driving, medical scan segmentation.
+3. **Robotics & Autonomous Systems**:
+   - Simultaneous Localization and Mapping (SLAM), path planning, robotic surgery.
+
+---
+
+## 6. AI Ethics, Bias & Governance
+
+As AI systems impact society, critical ethical considerations must be addressed:
+- **Fairness & Bias**: Preventing models from perpetuating historical human discrimination in hiring, credit scoring, or criminal justice.
+- **Explainability (XAI)**: Ensuring decisions made by complex neural networks can be understood and audited by domain experts.
+- **Safety & Alignment**: Ensuring agent objectives remain beneficial and aligned with human values.
+- **Privacy & Security**: Protecting training data against model extraction and adversarial attacks.

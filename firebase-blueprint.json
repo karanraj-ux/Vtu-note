@@ -15,6 +15,11 @@
           "maxLength": 100,
           "description": "User's full name"
         },
+        "collegeId": {
+          "type": "string",
+          "maxLength": 64,
+          "description": "User's unique College ID or University Seat Number (USN)"
+        },
         "college": {
           "type": "string",
           "maxLength": 100,
@@ -29,6 +34,11 @@
           "type": "string",
           "maxLength": 2,
           "description": "User's current semester"
+        },
+        "section": {
+          "type": "string",
+          "maxLength": 10,
+          "description": "User's current class section"
         },
         "createdAt": {
           "type": "string",

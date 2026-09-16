@@ -1,15 +1,13 @@
 export const subjectsData = {
     'first-year': {
         1: [
-            { name: 'Introduction to AI', code: '1BAIA103', credits: 3, info: 'First Semester Introduction to AI Notes, Model Question papers.' },
-
-            { name: 'Mathematics For CSE', code: '1BMATS101', credits: 4, info: 'First Semester Mathematics for CSE Module 1 to 5 Notes, Model Question papers, Question Bank, Lab Manual' },
-            { name: 'Applied Physics For CSE', code: '1BPHYS102', credits: 3, info: 'First Semester Physics Module 1 to 5 Notes, Solved Model Question papers, Lab Manual' },
-            { name: 'Principle of Programming Using C', code: '1BEIT105', credits: 4, info: 'First Semester Principles of Programming Using C for CSE Module 1 to 5 Notes, Solved Model Question papers, Lab Manual.' },
-            { name: 'Communicative English', code: '1BENG106', credits: 2, info: 'First Semester Communicative English Module 1 to 5 MCQ, Solved Model Question papers' },
-            { name: 'Indian Constitution', code: '1BICO107', credits: 2, info: 'First Semester Indian Constitution Module 1 to 5 MCQ, Solved Model Question papers' },
-            { name: 'Scientific Foundation Of Health', code: '1BSFHK158', credits: 2, info: 'First Semester Scientific Foundation Of Health Module 1 to 5 MCQ, Solved Model Question papers' },
-            { name: 'Introduction to Civil Engineering', code: '1BESC104C', credits: 3, info: 'First Semester Introduction to Civil Engineering Module 1 to 5 Notes, Solved Model Question papers.' },
+            { name: 'Mathematics For CSE', code: 'BMATS101', credits: 4, info: 'First Semester Mathematics for CSE Module 1 to 5 Notes, Model Question papers, Question Bank, Lab Manual' },
+            { name: 'Applied Physics For CSE', code: 'BPHYS102/202', credits: 3, info: 'First Semester Physics Module 1 to 5 Notes, Solved Model Question papers, Lab Manual' },
+            { name: 'Principle of Programming Using C', code: 'BPOP103/203', credits: 4, info: 'First Semester Principles of Programming Using C for CSE Module 1 to 5 Notes, Solved Model Question papers, Lab Manual.' },
+            { name: 'Communicative English', code: 'BENGK106', credits: 2, info: 'First Semester Communicative English Module 1 to 5 MCQ, Solved Model Question papers' },
+            { name: 'Indian Constitution', code: 'BICOK107', credits: 2, info: 'First Semester Indian Constitution Module 1 to 5 MCQ, Solved Model Question papers' },
+            { name: 'Scientific Foundation Of Health', code: 'BSFHK158', credits: 2, info: 'First Semester Scientific Foundation Of Health Module 1 to 5 MCQ, Solved Model Question papers' },
+            { name: 'Introduction to Civil Engineering', code: 'BESCK104A', credits: 3, info: 'First Semester Introduction to Civil Engineering Module 1 to 5 Notes, Solved Model Question papers.' },
         ],
         2: [
             { name: 'Mathematics For CSE', code: 'BMATS201', credits: 4, info: 'Second Semester Mathematics Module 1 to 5 Notes, Solved Model Question papers' },

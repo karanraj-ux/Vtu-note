@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
-import { BookOpen, User, LogOut, Upload, Rocket } from 'lucide-react';
+import { BookOpen, User, LogOut } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
+import { PWAInstallButton } from './PWAInstallButton';
 
 export default function Header() {
   const { user, signInWithGoogle, signOut } = useAuth();
@@ -16,31 +17,20 @@ export default function Header() {
               </div>
               <span className="font-bold text-xl text-zinc-100 tracking-tight">VTU Notes</span>
             </Link>
-
-            <Link 
-              to="/deploy" 
-              className="hidden md:inline-flex items-center space-x-1.5 text-xs font-semibold px-2.5 py-1 rounded-lg bg-zinc-900/80 border border-zinc-800 text-zinc-400 hover:text-white hover:border-zinc-700 transition-colors"
-              title="GitHub Pages & Actions Deployment"
-            >
-              <Rocket className="h-3.5 w-3.5 text-blue-400" />
-              <span>GitHub Actions</span>
-            </Link>
           </div>
 
           <div className="flex items-center space-x-4">
+            <div className="hidden md:block">
+              <PWAInstallButton />
+            </div>
+            
             {user ? (
-              <div className="flex items-center space-x-6">
-                <Link to="/sgpa" className="text-sm font-medium text-zinc-400 hover:text-zinc-100 transition-colors">
-                  SGPA Calc
+              <div className="flex items-center space-x-3 sm:space-x-6">
+                <Link to="/timetable" className="hidden sm:block text-sm font-medium text-zinc-400 hover:text-zinc-100 transition-colors">
+                  Timetable
                 </Link>
-                <Link to="/timetable" className="text-sm font-medium text-zinc-400 hover:text-zinc-100 transition-colors">
-                  Timetables
-                </Link>
-                <Link to="/community" className="text-sm font-medium text-zinc-400 hover:text-zinc-100 transition-colors">
+                <Link to="/community" className="hidden sm:block text-sm font-medium text-zinc-400 hover:text-zinc-100 transition-colors">
                   Community Feed
-                </Link>
-                <Link to="/deploy" className="md:hidden text-sm font-medium text-zinc-400 hover:text-zinc-100 transition-colors">
-                  Deploy
                 </Link>
                 <Link to="/profile" className="flex items-center space-x-2 text-zinc-400 hover:text-zinc-100 transition-colors">
                   <User className="h-5 w-5" />
@@ -56,20 +46,19 @@ export default function Header() {
               </div>
             ) : (
               <div className="flex items-center space-x-3">
-                <Link 
-                  to="/deploy" 
-                  className="md:hidden inline-flex items-center text-xs font-medium text-zinc-400 hover:text-white"
-                >
-                  Deploy
-                </Link>
                 <button
                   onClick={signInWithGoogle}
                   className="inline-flex items-center px-4 py-2 border border-zinc-700/50 text-sm font-medium rounded-full shadow-sm text-zinc-100 bg-zinc-800 hover:bg-zinc-700 hover:border-zinc-600 focus:outline-none transition-all"
                 >
-                  Sign in with College Gmail
+                  <span className="hidden sm:inline">Sign in with College Gmail</span>
+                  <span className="inline sm:hidden">Sign In</span>
                 </button>
               </div>
             )}
+            
+            <div className="block md:hidden">
+              <PWAInstallButton />
+            </div>
           </div>
         </div>
       </div>

@@ -56,7 +56,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const signInWithGoogle = async () => {
     const provider = new GoogleAuthProvider();
     provider.setCustomParameters({
-      hd: 'college.edu', // Could restrict to specific domain if needed
       prompt: 'select_account'
     });
     try {

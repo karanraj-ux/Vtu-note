@@ -2,98 +2,9 @@ export const moduleDetails = {
   "first-year": {
     1: [
       {
-        title: "Introduction to AI",
-        code: "1BAIA103",
-        vtuCode: "1BAIA103",
-        credits: 3,
-        modules: [
-          {
-            id: "ai-1",
-            title: "Module 1: Introduction",
-            description: "Introduction to Artificial Intelligence (Interactive Smart Note)",
-            fileUrl: "/read/ai-module-1",
-            previewUrl: "/read/ai-module-1",
-            type: "smart-note",
-            category: "notes",
-            essential: true,
-            uploadedDate: "2024-02-15",
-            fileSize: "0.1",
-            tags: ["module-1", "ai"]
-          },
-          {
-            id: "ai-2",
-            title: "Module 2: Problem Solving",
-            description: "Search Strategies & Problem Solving (Interactive Smart Note)",
-            fileUrl: "/read/ai-module-2",
-            previewUrl: "/read/ai-module-2",
-            type: "smart-note",
-            category: "notes",
-            essential: true,
-            uploadedDate: "2024-02-16",
-            fileSize: "0.1",
-            tags: ["module-2", "ai", "search"]
-          },
-          {
-            id: "ai-3",
-            title: "Module 3: Knowledge Representation",
-            description: "Logic & Knowledge Representation (Interactive Smart Note)",
-            fileUrl: "/read/ai-module-3",
-            previewUrl: "/read/ai-module-3",
-            type: "smart-note",
-            category: "notes",
-            essential: true,
-            uploadedDate: "2024-02-17",
-            fileSize: "0.1",
-            tags: ["module-3", "ai", "logic"]
-          },
-          {
-            id: "ai-4",
-            title: "Module 4: Reasoning under Uncertainty",
-            description: "Probability & Bayesian Networks (Interactive Smart Note)",
-            fileUrl: "/read/ai-module-4",
-            previewUrl: "/read/ai-module-4",
-            type: "smart-note",
-            category: "notes",
-            essential: true,
-            uploadedDate: "2024-02-18",
-            fileSize: "0.1",
-            tags: ["module-4", "ai", "probability"]
-          },
-          {
-            id: "ai-5",
-            title: "Module 5: Machine Learning",
-            description: "Introduction to Machine Learning (Interactive Smart Note)",
-            fileUrl: "/read/ai-module-5",
-            previewUrl: "/read/ai-module-5",
-            type: "smart-note",
-            category: "notes",
-            essential: true,
-            uploadedDate: "2024-02-19",
-            fileSize: "0.1",
-            tags: ["module-5", "ai", "machine-learning"]
-          }
-        ],
-        questionPapers: [
-           {
-            id: "ai-qp-1",
-            title: "Model Question Paper 1",
-            description: "VTU Model Question Paper",
-            fileUrl: "https://drive.google.com/uc?export=download&id=1jRFYhJ_qFwyLUdOCfRT7_uAdCqIilj5M",
-            previewUrl: "https://drive.google.com/file/d/1jRFYhJ_qFwyLUdOCfRT7_uAdCqIilj5M/preview",
-            type: "paper",
-            category: "question-papers",
-            essential: true,
-            uploadedDate: "2024-02-15",
-            fileSize: "1.2",
-            tags: ["paper", "ai"]
-           }
-        ]
-      },
-
-      {
         title: "Mathematics For CSE",
-        code: "1BMATS101",
-        vtuCode: "1BMATS101",
+        code: "BMATS101",
+        vtuCode: "BMATS101",
         credits: 4,
         modules: [
           {
@@ -150,10 +61,10 @@ export const moduleDetails = {
           },
           {
             id: "math-5",
-            title: "Module 5: Notes",
-            description: "Comprehensive notes for Module 5",
-            fileUrl: "https://drive.google.com/uc?export=download&id=1Mxfj8jZl1T9NlM8Mu-5MHiFEsninrxFV",
-            previewUrl: "https://drive.google.com/file/d/1Mxfj8jZl1T9NlM8Mu-5MHiFEsninrxFV/preview",
+            title: "Module 5: Matrix",
+            description: "Matrix, Rank of a matrix, Echelon form, Consistency of system of Linear equations, Gauss Elimination Method",
+            fileUrl: "/notes/BMATS101_Module_5.pdf",
+            previewUrl: "/notes/BMATS101_Module_5.pdf",
             type: "notes",
             category: "notes",
             essential: true,
@@ -441,8 +352,8 @@ export const moduleDetails = {
       },
       {
         title: "Communicative English",
-        code: "1BENG106",
-        vtuCode: "1BENG106",
+        code: "BENGK106",
+        vtuCode: "BENGK106",
         credits: 2,
         modules: [
           {
@@ -475,8 +386,8 @@ export const moduleDetails = {
       },
       {
         title: "Indian Constitution",
-        code: "1BICO107",
-        vtuCode: "1BICO107",
+        code: "BICOK107",
+        vtuCode: "BICOK107",
         credits: 1,
         modules: [
           {
@@ -561,8 +472,8 @@ export const moduleDetails = {
       },
       {
         title: "Scientific Foundation Of Health",
-        code: "1BSFHK158",
-        vtuCode: "1BSFHK158",
+        code: "BSFHK158",
+        vtuCode: "BSFHK158",
         credits: 1,
         modules: [
           {
@@ -595,8 +506,8 @@ export const moduleDetails = {
       },
       {
         title: "Introduction to Civil Engineering",
-        code: "1BESC104C",
-        vtuCode: "1BESC104C",
+        code: "BESCK104A",
+        vtuCode: "BESCK104A",
         credits: 3,
         modules: [
           {
@@ -843,8 +754,8 @@ export const moduleDetails = {
             id: "chem-3",
             title: "Module 3: Notes",
             description: "Comprehensive notes for Module 3",
-            fileUrl: "https://drive.google.com/uc?export=download&id=1rWU-U4keAIU5eNUs9Ivmjiaa3zNRH_tP",
-            previewUrl: "https://drive.google.com/file/d/1rWU-U4keAIU5eNUs9Ivmjiaa3zNRH_tP/preview",
+            fileUrl: "/notes/1BCHES102_Module_3.pdf",
+            previewUrl: "/notes/1BCHES102_Module_3.pdf",
             type: "notes",
             category: "notes",
             essential: true,
@@ -7911,71 +7822,6 @@ export const moduleDetails = {
         vtuCode: "BEC503",
         credits: 4,
         modules: [
-          {
-            id: "dc-notes-1",
-            title: "Module 1: Signal Spaces",
-            description: "Signal Spaces and Baseband Transmission (Interactive Smart Note)",
-            fileUrl: "/read/dc-module-1",
-            previewUrl: "/read/dc-module-1",
-            type: "smart-note",
-            category: "notes",
-            essential: true,
-            uploadedDate: "2024-03-01",
-            fileSize: "0.1",
-            tags: ["module-1", "dc", "baseband"]
-          },
-          {
-            id: "dc-notes-2",
-            title: "Module 2: Bandpass Data",
-            description: "Bandpass Data Transmission (Interactive Smart Note)",
-            fileUrl: "/read/dc-module-2",
-            previewUrl: "/read/dc-module-2",
-            type: "smart-note",
-            category: "notes",
-            essential: true,
-            uploadedDate: "2024-03-02",
-            fileSize: "0.1",
-            tags: ["module-2", "dc", "bandpass"]
-          },
-          {
-            id: "dc-notes-3",
-            title: "Module 3: Info Theory",
-            description: "Information Theory (Interactive Smart Note)",
-            fileUrl: "/read/dc-module-3",
-            previewUrl: "/read/dc-module-3",
-            type: "smart-note",
-            category: "notes",
-            essential: true,
-            uploadedDate: "2024-03-03",
-            fileSize: "0.1",
-            tags: ["module-3", "dc", "information-theory"]
-          },
-          {
-            id: "dc-notes-4",
-            title: "Module 4: Error Control",
-            description: "Error Control Coding (Interactive Smart Note)",
-            fileUrl: "/read/dc-module-4",
-            previewUrl: "/read/dc-module-4",
-            type: "smart-note",
-            category: "notes",
-            essential: true,
-            uploadedDate: "2024-03-04",
-            fileSize: "0.1",
-            tags: ["module-4", "dc", "error-control"]
-          },
-          {
-            id: "dc-notes-5",
-            title: "Module 5: Spread Spectrum",
-            description: "Spread Spectrum Modulation (Interactive Smart Note)",
-            fileUrl: "/read/dc-module-5",
-            previewUrl: "/read/dc-module-5",
-            type: "smart-note",
-            category: "notes",
-            essential: true,
-            uploadedDate: "2024-03-05",
-            fileSize: "0.1",
-            tags: ["module-5", "dc", "spread-spectrum"]
-          },
           {
             id: "dc-1",
             title: "All Question Papers",

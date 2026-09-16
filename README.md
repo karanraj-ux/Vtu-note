@@ -25,11 +25,12 @@ git push -u origin main
 ```
 
 ### Step 2: Enable GitHub Pages in Repository Settings
+> **Note**: If you see `Get Pages site failed. Please verify that the repository has Pages enabled`, it means GitHub Pages source is not yet set to GitHub Actions!
 1. Go to your repository on GitHub.
 2. Click **Settings** (tab at the top).
-3. In the left sidebar, click **Pages**.
-4. Under **Build and deployment** > **Source**, select **GitHub Actions**.
+3. In the left sidebar under *Code and automation*, click **Pages**.
+4. Under **Build and deployment** > **Source**, change the dropdown from "Deploy from a branch" to **GitHub Actions**.
 
 ### Step 3: View Your Live Website!
-Once you enable GitHub Actions, the deployment workflow will trigger automatically. Within 1–2 minutes, your website will be live at:
+Once you select **GitHub Actions**, re-run the workflow (or push a commit). The deployment workflow will run successfully. Within 1–2 minutes, your website will be live at:
 `https://<your-username>.github.io/<your-repo-name>/`

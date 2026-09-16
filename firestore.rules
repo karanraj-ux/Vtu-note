@@ -20,9 +20,11 @@ service cloud.firestore {
       return data.keys().hasAll(['email', 'name', 'createdAt', 'updatedAt']) &&
              data.email is string && data.email.size() <= 100 &&
              data.name is string && data.name.size() <= 100 &&
+             (data.get('collegeId', '') is string && data.get('collegeId', '').size() <= 64) &&
              (data.get('college', '') is string && data.get('college', '').size() <= 100) &&
              (data.get('branch', '') is string && data.get('branch', '').size() <= 100) &&
              (data.get('semester', '') is string && data.get('semester', '').size() <= 2) &&
+             (data.get('section', '') is string && data.get('section', '').size() <= 10) &&
              data.createdAt == request.time &&
              data.updatedAt == request.time;
     }
@@ -30,14 +32,17 @@ service cloud.firestore {
     function isValidUserUpdate(data) {
        return data.email is string && data.email.size() <= 100 &&
              data.name is string && data.name.size() <= 100 &&
+             (data.get('collegeId', '') is string && data.get('collegeId', '').size() <= 64) &&
              (data.get('college', '') is string && data.get('college', '').size() <= 100) &&
              (data.get('branch', '') is string && data.get('branch', '').size() <= 100) &&
              (data.get('semester', '') is string && data.get('semester', '').size() <= 2) &&
+             (data.get('section', '') is string && data.get('section', '').size() <= 10) &&
              data.updatedAt == request.time;
     }
 
     match /users/{userId} {
-      allow get: if isOwner(userId);
+      allow get: if isSignedIn();
+      allow list: if isSignedIn();
       allow create: if isOwner(userId) && isValidId(userId) && isValidUser(incoming());
       allow update: if isOwner(userId) && isValidId(userId) && isValidUserUpdate(incoming()) && incoming().createdAt == existing().createdAt && incoming().email == existing().email;
     }
@@ -67,6 +72,7 @@ service cloud.firestore {
              data.uploaderId is string && data.uploaderId.size() <= 128 &&
              data.uploaderName is string && data.uploaderName.size() <= 100 &&
              data.college is string && data.college.size() <= 100 &&
+             (data.get('collegeId', '') is string && data.get('collegeId', '').size() <= 64) &&
              data.createdAt == request.time;
     }
     
@@ -76,6 +82,7 @@ service cloud.firestore {
               data.uploaderId == existing().uploaderId &&
               data.uploaderName == existing().uploaderName &&
               data.college == existing().college &&
+              (data.get('collegeId', '') is string && data.get('collegeId', '').size() <= 64) &&
               data.createdAt == existing().createdAt;
     }
 

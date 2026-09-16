@@ -11,9 +11,7 @@ import Profile from './pages/Profile';
 import SubjectView from './pages/SubjectView';
 import Community from './pages/Community';
 import Timetable from './pages/Timetable';
-import NoteReader from './pages/NoteReader';
-import SgpaCalculator from './pages/SgpaCalculator';
-import GitHubDeploy from './pages/GitHubDeploy';
+import PdfViewer from './pages/PdfViewer';
 
 export default function App() {
   return (
@@ -26,11 +24,18 @@ export default function App() {
             <Route path="/profile" element={<Profile />} />
             <Route path="/community" element={<Community />} />
             <Route path="/timetable" element={<Timetable />} />
+            
+            {/* GitHub VTU-NOTES format routes */}
+            <Route path="/branch/:branch" element={<Home />} />
+            <Route path="/branch/:branch/:semester" element={<Home />} />
+            <Route path="/branch/:branch/:semester/modules/:subjectName" element={<SubjectView />} />
+            
+            {/* Legacy applet format routes */}
             <Route path="/subject/:year/:sem/:subjectCode" element={<SubjectView />} />
-            <Route path="/read/:noteId" element={<NoteReader />} />
-            <Route path="/sgpa" element={<SgpaCalculator />} />
-            <Route path="/deploy" element={<GitHubDeploy />} />
-            <Route path="/github-actions" element={<GitHubDeploy />} />
+            
+            {/* Reading Mode & PDF Viewer */}
+            <Route path="/pdf/:pdfUrl" element={<PdfViewer />} />
+            <Route path="/read/:noteId" element={<PdfViewer />} />
           </Routes>
         </main>
       </div>
