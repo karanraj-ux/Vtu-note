@@ -16,11 +16,10 @@ export const PWAInstallButton: React.FC = () => {
     return (
       <button
         onClick={install}
-        className="inline-flex items-center gap-1.5 rounded-full bg-blue-600 px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-bold text-white shadow-sm hover:bg-blue-500 transition-all border border-blue-500/50"
+        className="w-full flex justify-center items-center gap-2 rounded-xl bg-blue-600 px-4 py-2.5 text-sm font-bold text-white shadow-sm hover:bg-blue-500 transition-all border border-blue-500/50"
       >
-        <Download className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-        <span className="hidden sm:inline">Install App</span>
-        <span className="inline sm:hidden">Install</span>
+        <Download className="w-4 h-4" />
+        <span>Install App</span>
       </button>
     );
   }
@@ -31,11 +30,10 @@ export const PWAInstallButton: React.FC = () => {
       <>
         <button
           onClick={() => setShowIOSGuide(true)}
-          className="inline-flex items-center gap-1.5 rounded-full border border-zinc-700 bg-zinc-800/80 px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-bold text-zinc-300 hover:bg-zinc-700 hover:text-white transition-all"
+          className="w-full flex justify-center items-center gap-2 rounded-xl border border-zinc-700 bg-zinc-800/80 px-4 py-2.5 text-sm font-bold text-zinc-300 hover:bg-zinc-700 hover:text-white transition-all"
         >
-          <Download className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-          <span className="hidden sm:inline">Install App</span>
-          <span className="inline sm:hidden">Install</span>
+          <Download className="w-4 h-4" />
+          <span>Install App</span>
         </button>
 
         {showIOSGuide && (
